@@ -15,7 +15,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 [[HopServer]]
-:imagesdir: ../../assets/images
+:imagesdir: ../../../assets/images
 :description: This how-to explains how to run Apache Hop workflows and pipelines in Apache Airflow with the DockerOperator
 == Run Apache Airflow in Docker Compose
 

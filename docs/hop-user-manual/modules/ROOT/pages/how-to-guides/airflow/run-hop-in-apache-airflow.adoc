@@ -15,7 +15,7 @@ specific language governing permissions and limitations
 under the License.
 ////
 [[HopServer]]
-:imagesdir: ../../assets/images
+:imagesdir:  ../../../assets/images
 :description: This page is an index of how-to's that explain how to run Apache Hop workflows and pipelines in Apache Airflow
 
 = image:how-to-guides/run-hop-in-apache-airflow/airflow-logo.svg[Apache Airflow, width="75vw", align="center"]Run workflows and pipelines in Apache Airflow
