@@ -33,6 +33,10 @@ A DAG is defined in a Python script, which represents the DAGs structure (tasks 
 
 From an Apache Hop point of view, our focus is different: Apache Hop wants to enable citizen developers to be productive data engineers without the need to write code. With that in mind, we don't need all the bells and whistles Apache Airflow provides (but don't let that stop you from using Apache Airflow to its full potential!).
 
+== Running Hop on Airflow
+[the file]
+- xref:./run-hop-in-apache-airflow-docker.adoc[running Hop on and Apache Airflow deployed with Docker Compose]
+
 == Scheduling a DAG in Apache Airflow
 
 So far, we've looked at DAG that we ran manually and ad-hoc. There are lots of https://airflow.apache.org/docs/apache-airflow/stable/authoring-and-scheduling/index.html[well-documented^] options to schedule DAGs in Apache Airflow.  Since scheduling your DAGs is not really Apache Hop related, we'll only cover this briefly here.
