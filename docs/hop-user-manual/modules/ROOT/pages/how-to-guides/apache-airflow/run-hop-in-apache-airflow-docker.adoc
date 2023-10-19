@@ -17,7 +17,7 @@ under the License.
 [[HopServer]]
 :imagesdir: ../../../assets/images
 :description: This how-to explains how to run Apache Hop workflows and pipelines in Apache Airflow with the DockerOperator
-== Run Apache Airflow in Docker Compose
+= Run Apache Airflow in Docker Compose
 
 The goal of this page is to get a basic Airflow setup running to demonstrate how Apache Airflow and Apache Hop can be used together. Check out the different https://airflow.apache.org/docs/apache-airflow/stable/installation/index.html[installation options^] if you want to build a production-ready Apache Airflow installation.
 
