@@ -34,7 +34,7 @@ We'll use the Apache Airflow https://airflow.apache.org/docs/apache-airflow-prov
 
 You'll need to have your own Kubernetes deployment of Airflow to follow along.
 
-Again, you don't need to be an Apache Airflow, or Python expert to create DAGs, we'll treat DAGs as just another text file. However you'll need some level of understanding of Kubernetes and custom Docker images.
+Again, you don't need to be an Apache Airflow, or Python expert to create DAGs, we'll treat DAGs as just another text file. However you'll need some level of understanding of Kubernetes and custom Docker images for this one.
 Since we'll use a container to run our workflows and pipelines, the configuration in our DAG will look very similar to the environment variables you'll pass to the  xref:tech-manual::docker-container.adoc[short-lived Apache Hop container].
 
 Let's take a closer look at a couple of things in the DAG we'll use. This will look very familiar if you've ever run Apache Hop workflows and pipelines in containers:
