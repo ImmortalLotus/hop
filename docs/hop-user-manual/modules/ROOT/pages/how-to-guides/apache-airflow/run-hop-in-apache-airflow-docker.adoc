@@ -17,7 +17,9 @@ under the License.
 [[HopServer]]
 :imagesdir: ../../../assets/images
 :description: This how-to explains how to run Apache Hop workflows and pipelines in Apache Airflow with the DockerOperator
-= Run Apache Airflow in Docker Compose
+= Run Apache Hop on a Docker Compose Airflow deployment.
+
+== Run Apache Airflow in Docker Compose
 
 The goal of this page is to get a basic Airflow setup running to demonstrate how Apache Airflow and Apache Hop can be used together. Check out the different https://airflow.apache.org/docs/apache-airflow/stable/installation/index.html[installation options^] if you want to build a production-ready Apache Airflow installation.
 
@@ -69,7 +71,7 @@ We'll use the Apache Airflow https://airflow.apache.org/docs/apache-airflow-prov
 Again, you don't need to be an Apache Airflow, Docker, or Python expert to create DAGs, we'll treat DAGs as just another text file.
 Since we'll use a container to run our workflows and pipelines, the configuration in our DAG will look very similar to the environment variables you'll pass to the  xref:tech-manual::docker-container.adoc[short-lived Apache Hop container].
 
-Let's take a closer look at a couple of things in the DAG we'll use. This will look very familiar if you've even run Apache Hop workflows and pipelines in containers:
+Let's take a closer look at a couple of things in the DAG we'll use. This will look very familiar if you've ever run Apache Hop workflows and pipelines in containers:
 
 Import the DockerOperator into your DAG:
 
