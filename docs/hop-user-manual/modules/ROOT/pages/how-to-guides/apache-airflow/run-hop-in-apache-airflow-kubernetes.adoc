@@ -1,0 +1,90 @@
+////
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+  http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+////
+[[HopServer]]
+:imagesdir: ../../../assets/images
+:description: This how-to explains how to run Apache Hop workflows and pipelines in Apache Airflow in a Kubernetes deployment.
+
+= Run Apache Hop on a Kubernetes Airflow deployment.
+
+== Run Apache Airflow in Kubernetes
+
+The goal of this page is to demonstrate how Apache Airflow and Apache Hop can be used together when Airflow is deployed on Kubernetes.
+
+This page is needed because Airflow's https://airflow.apache.org/docs/apache-airflow-providers-docker/stable/_api/airflow/providers/docker/operators/docker/index.html[DockerOperator^] does not work in Kubernetes enviroments by default.
+
+For simplicity, we won't cover how to deploy Airflow, as it is mostly dependant on local cenarios. Instead, look at this https://airflow.apache.org/docs/helm-chart/stable/index.html[Helm Chart^] for a good starting point. If you want to build a production-ready Apache Airflow installation, https://airflow.apache.org/docs/helm-chart/stable/production-guide.html[check this one instead^].
+
+== Your first Apache Airflow and Apache Hop DAG - Kubernetes Edition
+
+We'll use the Apache Airflow https://airflow.apache.org/docs/apache-airflow-providers-cncf-kubernetes/stable/operators.html[KubernetesPodOperator^] to run Apache Hop workflows and pipelines from a kubernetes pod in Apache Airflow's cluster.
+
+You'll need to have your own Kubernetes deployment of Airflow to follow along.
+
+Again, you don't need to be an Apache Airflow, or Python expert to create DAGs, we'll treat DAGs as just another text file. However you'll need some level of understanding of Kubernetes and custom Docker images.
+Since we'll use a container to run our workflows and pipelines, the configuration in our DAG will look very similar to the environment variables you'll pass to the  xref:tech-manual::docker-container.adoc[short-lived Apache Hop container].
+
+Let's take a closer look at a couple of things in the DAG we'll use. This will look very familiar if you've ever run Apache Hop workflows and pipelines in containers:
+
+Import the Kubernetes Pod Operator, and the Kubernetes API client into your DAG:
+
+[source, Python]
+----
+from airflow.providers.cncf.kubernetes.operators.pod import KubernetesPodOperator
+from kubernetes.client import models as k8s
+----
+
+The KubernetesPodOperator is how we'll use the xref:tech-manual::docker-container.adoc[short-lived Apache Hop container], and k8s is needed to configure our enviroment variables.
+
+Let's take a look at our Hop enviroment first:
+
+[source, python]
+----
+init_environments = [k8s.V1EnvVar(name="HOP_LOG_LEVEL", value="Detailed"),
+                     k8s.V1EnvVar(name="HOP_FILE_PATH", value="/opt/YourRepoFolder/YourProjectFolder/Pipeline.hwf"),
+                     k8s.V1EnvVar(name="HOP_PROJECT_FOLDER",value="/opt/YourRepoFolder/YourProjectFolder"),
+                     k8s.V1EnvVar(name="HOP_PROJECT_NAME",value="YourProjectName"),
+                     k8s.V1EnvVar(name="HOP_RUN_CONFIG",value="local"),
+                     k8s.V1EnvVar(name="HOP_PROJECT_CONFIG_FILE",value="project-config.json"),
+                     k8s.V1EnvVar(name="HOP_CUSTOM_ENTRYPOINT_EXTENSION_SHELL_FILE_PATH",value="/home/hop/gitClone.sh")
+                     ]
+----
+
+This is mostly the same as the DockerOperators enviroment needs, with the exception of the HOP_CUSTOM_ENTRYPOINT_EXTENSION_SHELL_FILE_PATH variable, which we'll explain later on in this page.
+
+With that, your KubernetesPodOperator's code should look like this: 
+
+[source, python]
+----
+init_environments = [k8s.V1EnvVar(name="HOP_LOG_LEVEL", value="Detailed"),
+                     k8s.V1EnvVar(name="HOP_FILE_PATH", value="/opt/etls_hop/FrequenciaDW/frequencia.hwf"),
+                     k8s.V1EnvVar(name="HOP_PROJECT_FOLDER",value="/opt/etls_hop/FrequenciaDW"),
+                     k8s.V1EnvVar(name="HOP_PROJECT_NAME",value="frequenciaEmNumeros"),
+                     k8s.V1EnvVar(name="HOP_RUN_CONFIG",value="local"),
+                     k8s.V1EnvVar(name="HOP_PROJECT_CONFIG_FILE",value="project-config.json"),
+                     k8s.V1EnvVar(name="HOP_CUSTOM_ENTRYPOINT_EXTENSION_SHELL_FILE_PATH",value="/home/hop/gitClone.sh")
+                     ]
+k = KubernetesPodOperator(
+        name="YOUR_POD_NAME",
+        image="YOUR_DOCKER_IMAGE_REPOSITORY/hop:2.6.0.2",
+        env_vars=init_environments,
+        labels={"ANYTHING": "YOU_WANT"},
+        task_id="YOUR_TASK_ID",
+        do_xcom_push=False,
+        get_logs=True
+        )
+----
+
