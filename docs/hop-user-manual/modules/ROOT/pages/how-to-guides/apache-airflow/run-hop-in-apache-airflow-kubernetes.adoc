@@ -79,7 +79,7 @@ init_environments = [k8s.V1EnvVar(name="HOP_LOG_LEVEL", value="Detailed"),
                      ]
 k = KubernetesPodOperator(
         name="YOUR_POD_NAME",
-        image="YOUR_DOCKER_IMAGE_REPOSITORY/hop:2.6.0.2",
+        image="ANY_DOCKER_IMAGE_REPOSITORY/hop:latest",
         env_vars=init_environments,
         labels={"ANYTHING": "YOU_WANT"},
         task_id="YOUR_TASK_ID",
