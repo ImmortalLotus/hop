@@ -70,13 +70,12 @@ With that, your KubernetesPodOperator's code should look like this:
 [source, python]
 ----
 init_environments = [k8s.V1EnvVar(name="HOP_LOG_LEVEL", value="Detailed"),
-                     k8s.V1EnvVar(name="HOP_FILE_PATH", value="/opt/etls_hop/FrequenciaDW/frequencia.hwf"),
-                     k8s.V1EnvVar(name="HOP_PROJECT_FOLDER",value="/opt/etls_hop/FrequenciaDW"),
-                     k8s.V1EnvVar(name="HOP_PROJECT_NAME",value="frequenciaEmNumeros"),
+                     k8s.V1EnvVar(name="HOP_FILE_PATH", value="/opt/YourRepoFolder/YourProjectFolder/Pipeline.hwf"),
+                     k8s.V1EnvVar(name="HOP_PROJECT_FOLDER",value="/opt/YourRepoFolder/YourProjectFolder"),
+                     k8s.V1EnvVar(name="HOP_PROJECT_NAME",value="YourProjectName"),
                      k8s.V1EnvVar(name="HOP_RUN_CONFIG",value="local"),
                      k8s.V1EnvVar(name="HOP_PROJECT_CONFIG_FILE",value="project-config.json"),
-                     k8s.V1EnvVar(name="HOP_CUSTOM_ENTRYPOINT_EXTENSION_SHELL_FILE_PATH",value="/home/hop/gitClone.sh")
-                     ]
+                     k8s.V1EnvVar(name="HOP_CUSTOM_ENTRYPOINT_EXTENSION_SHELL_FILE_PATH",value="/home/hop/gitClone.sh")]
 k = KubernetesPodOperator(
         name="YOUR_POD_NAME",
         image="ANY_DOCKER_IMAGE_REPOSITORY/hop:latest",
